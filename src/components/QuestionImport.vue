@@ -190,7 +190,7 @@ export default {
       optionval: '',
       optionId: 0,
       sequence: 0,
-      step: 1, 
+      step: 1,
       exit: false,
       nextStepId: 'import next step here',
       skipStepId: '',
@@ -225,19 +225,19 @@ export default {
         break;
 
         case 'lessthan':
-        this.compareExp = 1
+        this.compareExp = 4
         break;
 
         case 'lessorequal':
-        this.compareExp = 2
-        break;
-
-        case 'greaterthan':
         this.compareExp = 3
         break;
 
+        case 'greaterthan':
+        this.compareExp = 2
+        break;
+
         case 'greaterorequal':
-        this.compareExp = 4
+        this.compareExp = 1
         break;
       }
 
@@ -273,9 +273,6 @@ export default {
         this.questionOptions = 2
         break;
       }
-
-      
-
       var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.valueExpression  + "'" + " "  + "," + " " + "'" + this.step++ + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
        this.rulestep.push({
         script: ruleOutput
