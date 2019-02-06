@@ -3,7 +3,9 @@
     <v-app>
         <v-container>
           <v-layout>
+            <v-flex xs6 order-lg2>
             <v-form v-on:submit.prevent="addQuestion">
+              <h2>RuleStep</h2>
               <v-text-field
                 v-model="id"
                 name="ruleStepId"
@@ -41,13 +43,19 @@
                 id="rule-id"
               ></v-text-field>
               <v-text-field
+                v-model="valueExpression"
+                name="valueExpression"
+                label="Value Expression"
+                id="value-expression"
+              ></v-text-field>
+              <v-text-field
                 v-model="dataelementId"
                 name="dataelementId"
                 label="DataElement_Id"
                 id="dataelement-id"
               ></v-text-field>
               <div>
-                SkipStep-OptionSet
+                <h2>SkipStep-OptionSet</h2>
                 <v-text-field
                 v-model="skipStepId"
                 name="skipStepId"
@@ -100,17 +108,9 @@
                 RuleStep_FK: <br>
                 {{id}}
               </div>
-              <div
-              v-for="(option, index) in optionsets"
-              :key="option.id">
-              {{option}}
-              <br />
-              <v-btn
-              small
-              color="red"
-              @click="optionsets.splice(index, 1)">remove</v-btn>
               </div>
-              </div>
+              <div class="spacer"></div>
+              <hr>
               <v-btn
               small
               color="success"
@@ -121,17 +121,15 @@
               <v-btn
               color="success"
               @click="clear">Clear</v-btn>
-              <hr>
             </v-form>
-          </v-layout>
-        </v-container>
-        <v-container grid-list-xs>
-          <v-layout row wrap>
+            </v-flex>
+            <v-flex xs4 order-md2 order-xs1>
+              <h1>Question</h1>
             <div
               v-for="(question, index) in rulestep"
               :key="question.id"
               >
-              {{question}}
+              <span class="script-text">{{question}}</span>
               <v-btn
               color="red"
               @click="rulestep.splice(index, 1)">remove</v-btn>
@@ -139,7 +137,19 @@
               color="success"
               @click="">Add Options</v-btn> -->
             </div>
-          </v-layout>
+            <h1>SkipStep</h1>
+              <div
+              v-for="(option, index) in optionsets"
+              :key="option.id">
+              <span class="script-text">{{option}}</span>
+              <br />
+              <v-btn
+              small
+              color="red"
+              @click="optionsets.splice(index, 1)">remove</v-btn>
+              </div>
+              </v-flex>
+              </v-layout>
         </v-container>
     </v-app>
     <router-view/>
@@ -170,8 +180,9 @@ export default {
       rulestep: ruleStorage.fetch(),
       id: '',
       questionName: '',
-      ruleId: '',
-      dataelementId: '',
+      ruleId: 'null',
+      valueExpression: 'null',
+      dataelementId: 'null',
       optionsets: [],
       linkedRule: [],
       questionOptions: [],
@@ -179,16 +190,14 @@ export default {
       optionval: '',
       optionId: 0,
       sequence: 0,
+      step: 1, 
       exit: false,
-      nextStepId: '',
+      nextStepId: 'import next step here',
       skipStepId: '',
       ruleStepfk: this.id
     }
   },
   computed: {
-    // ...mapGetters({
-    //   loadRuleStep: 'loadSteps'
-    // })
     filteredQuestions () {
       return this.rulestep
     }
@@ -239,7 +248,7 @@ export default {
         this.exit = 0
       }
 
-      var finalOutput = "'" + this.skipStepId + "'" + " "  + "," + " " + "'" + this.id + "'" + " "  + "," + " " + "'" + this.compareExp + "'" + " "  + "," + " " + "'" + this.optionval + "'" + " "  + "," + " " + "'" + this.nextStepId + "'" + " "  + "," + " " + "'" + this.exit + "'" + " "  + "," + " " + "'" + this.sequence + "'"
+      var finalOutput = "('" + this.skipStepId + "'" + " "  + "," + " " + "'" + this.sequence++ + "'" + " "  + "," + " " + "'" + this.compareExp + "'" + " "  + "," + " " + "'" + this.optionval + "'" + " "  + "," + " " + "'" + "NEXTSTEP_ID" + "'" + " "  + "," + " " + "'" + this.exit + "'" + " "  + "," + " " + "'" + this.id + "'),"
       this.optionsets.push({
         script: finalOutput
         // id: this.optionId++,
@@ -265,7 +274,9 @@ export default {
         break;
       }
 
-      var ruleOutput = "'" + this.id + "'" + "," + "'" + this.questionName + "'" + "," + "'" + this.ruleId + "'" + "," + "'" + this.dataelementId + "'" + "," + "'" + this.questionOptions + "'" + "," + "'" + this.optionsets + "'"
+      
+
+      var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.valueExpression  + "'" + " "  + "," + " " + "'" + this.step++ + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
        this.rulestep.push({
         script: ruleOutput
         // questionName: this.questionName,
@@ -288,7 +299,7 @@ export default {
     clear () {
         this.id = ''
         this.questionName = ''
-        this.ruleId = ''
+        // this.ruleId = ''
         this.dataelementId = ''
         this.questionOptions = ''
         this.options = ''
@@ -296,7 +307,20 @@ export default {
         this.compareExp = ''
         this.exit = ''
         this.skipStepId = ''
+        this.step = 1,
+        this.sequence = 0
     }
   }
 }
 </script>
+<style scoped>
+.script-text {
+  font-weight: bold;
+  font-size: 14px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.spacer {
+  height: 30px;
+}
+</style>
