@@ -3,19 +3,22 @@
     <v-app>
         <v-container>
           <v-layout>
-            <v-flex xs6 order-lg2>
+            <v-flex xs6>
             <v-form v-on:submit.prevent="addQuestion">
+              <div class="skipstep-form">
               <h2>RuleStep</h2>
+              <v-layout row>
               <v-text-field
                 v-model="id"
                 name="ruleStepId"
-                label="RuleStep_Id"
+                label="rulestep_Id"
                 id="rulestep-id"
               ></v-text-field>
               <v-btn
               small
               color="success"
               @click="genGUID">Generate guid</v-btn>
+              </v-layout>
               <v-text-field
                 v-model="questionName"
                 name="questionName"
@@ -54,8 +57,10 @@
                 label="DataElement_Id"
                 id="dataelement-id"
               ></v-text-field>
-              <div>
+              </div>
+              <div class="skipstep-form">
                 <h2>SkipStep-OptionSet</h2>
+                <v-layout row>
                 <v-text-field
                 v-model="skipStepId"
                 name="skipStepId"
@@ -66,6 +71,7 @@
               small
               color="success"
               @click="skipGUID">Generate guid</v-btn>
+                </v-layout>
                 <v-text-field
                 v-model="optionval"
                 name="option"
@@ -98,19 +104,18 @@
                   label="GreaterThanOrEqual"
                 ></v-radio>
               </v-radio-group>
-              <hr>
               <v-checkbox
               label="Exit"
               v-model="exit"
               value="exit"
               ></v-checkbox>
-              <div>
-                RuleStep_FK: <br>
-                {{id}}
+              <v-text-field
+                v-model="id"
+                readonly
+                name="rulestep_fk"
+                label="Current Rulestep"
+              ></v-text-field>
               </div>
-              </div>
-              <div class="spacer"></div>
-              <hr>
               <v-btn
               small
               color="success"
@@ -123,30 +128,43 @@
               @click="clear">Clear</v-btn>
             </v-form>
             </v-flex>
-            <v-flex xs4 order-md2 order-xs1>
+            <v-flex xs6
+            class="results">
               <h1>Question</h1>
             <div
               v-for="(question, index) in rulestep"
               :key="question.id"
               >
-              <span class="script-text">{{question}}</span>
+              <v-layout row>
+              <span class="script-text">{{question.script}}</span>
               <v-btn
               color="red"
               @click="rulestep.splice(index, 1)">remove</v-btn>
-              <!-- <v-btn
-              color="success"
-              @click="">Add Options</v-btn> -->
+              </v-layout>
             </div>
             <h1>SkipStep</h1>
               <div
               v-for="(option, index) in optionsets"
               :key="option.id">
-              <span class="script-text">{{option}}</span>
+              <v-layout row>
+              <span class="script-text">{{option.script}}</span>
               <br />
               <v-btn
               small
               color="red"
               @click="optionsets.splice(index, 1)">remove</v-btn>
+              </v-layout>
+              </div>
+              <div class="draggable-state">
+                <draggable v-model="rulestep" :options="{draggable:'.sortable-stack', animation: 150, easing: 'cubic-bezier(1, 0, 0, 1)'}" @start="drag=true" @end="drag=false">
+                  <div
+                  class="sortable-stack"
+                  v-for="element in rulestep"
+                  :key="element.id">
+                    {{element.questiontext}}
+                    {{element.script}}
+                  </div>
+                </draggable>
               </div>
               </v-flex>
               </v-layout>
@@ -157,6 +175,7 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 /* eslint-disable */
 var STORAGE_KEY = 'rulestep-vue'
 var ruleStorage = {
@@ -175,11 +194,15 @@ var ruleStorage = {
 
 export default {
   name: 'QuestionImport',
+  components: {
+    draggable,
+  },
   data () {
     return {
       rulestep: ruleStorage.fetch(),
       id: '',
       questionName: '',
+      questionId: 'null',
       ruleId: 'null',
       valueExpression: 'null',
       dataelementId: 'null',
@@ -191,7 +214,7 @@ export default {
       optionId: 0,
       sequence: 0,
       step: 1,
-      exit: false,
+      exit: true,
       nextStepId: 'import next step here',
       skipStepId: '',
       ruleStepfk: this.id
@@ -225,19 +248,19 @@ export default {
         break;
 
         case 'lessthan':
-        this.compareExp = 4
-        break;
-
-        case 'lessorequal':
         this.compareExp = 3
         break;
 
+        case 'lessorequal':
+        this.compareExp = 4
+        break;
+
         case 'greaterthan':
-        this.compareExp = 2
+        this.compareExp = 1
         break;
 
         case 'greaterorequal':
-        this.compareExp = 1
+        this.compareExp = 2
         break;
       }
 
@@ -247,8 +270,10 @@ export default {
       } else {
         this.exit = 0
       }
-
-      var finalOutput = "('" + this.skipStepId + "'" + " "  + "," + " " + "'" + this.sequence++ + "'" + " "  + "," + " " + "'" + this.compareExp + "'" + " "  + "," + " " + "'" + this.optionval + "'" + " "  + "," + " " + "'" + "NEXTSTEP_ID" + "'" + " "  + "," + " " + "'" + this.exit + "'" + " "  + "," + " " + "'" + this.id + "'),"
+      // this.questionId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      //   (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      // )
+      var finalOutput = "('" + this.skipStepId + "'" + " "  + "," + " " + "'" + this.questionId + "'" + " "  + "," + " " + "'" + this.sequence++ + "'" + " "  + "," + " " + "'" + this.compareExp + "'" + " "  + "," + " " + "'" + this.optionval + "'" + " "  + "," + " " + "'" + this.nextStepId + "'" + " "  + "," + " " + "'" + this.exit + "'" + " "  + "," + " " + "'" + this.id + "'),"
       this.optionsets.push({
         script: finalOutput
         // id: this.optionId++,
@@ -258,6 +283,7 @@ export default {
         // exit: this.exit,
         // sequence: this.sequence++
       })
+      this.exit = ''
     },
     addQuestion () {
       switch (this.questionOptions) {
@@ -275,7 +301,8 @@ export default {
       }
       var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.valueExpression  + "'" + " "  + "," + " " + "'" + this.step++ + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
        this.rulestep.push({
-        script: ruleOutput
+        script: ruleOutput,
+        questiontext: this.questionName
         // questionName: this.questionName,
         // ruleId: this.ruleId,
         // dataelementId: this.dataelementId,
@@ -319,5 +346,24 @@ export default {
 
 .spacer {
   height: 30px;
+}
+
+.skipstep-form {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.sortable-stack {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 5px;
+}
+.results {
+  padding: 10px;
+}
+
+.draggable-state {
+  margin-top: 50px;
+  position: relative;
 }
 </style>

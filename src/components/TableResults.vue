@@ -1,8 +1,8 @@
 <template>
 <v-app>
         <v-container>
-          <v-layout>
-            <v-flex xs6 order-lg2>
+          <v-layout class="skipstep-form">
+            <v-flex xs6>
             <v-form v-on:submit.prevent="addQuestion">
               <v-text-field
                 v-model="id"
@@ -127,13 +127,13 @@
             </v-form>
             </v-flex>
             <!--Results section-->
-            <v-flex xs4 order-md2 order-xs1>
+            <v-flex xs6>
                 <h1>Results</h1>
               <div
                 v-for="(result, index) in ruleresult"
                 :key="result.id"
                 >
-                <span class="script-text">{{result}}</span>
+                <span class="script-text">{{result.script}}</span>
                 <v-btn
                 color="red"
                 @click="ruleresult.splice(index, 1)">remove</v-btn>
@@ -282,6 +282,12 @@ export default {
   font-weight: bold;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
+}
+
+.skipstep-form {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 20px;
+  padding: 10px;
 }
 </style>
 

@@ -5,8 +5,10 @@ import router from './router'
 import store from './store'
 import 'vuetify/dist/vuetify.min.css'
 import Vuetify from 'vuetify'
+import draggable from 'vuedraggable'
 
 Vue.use(Vuetify)
+Vue.use(draggable)
 
 Vue.config.productionTip = false
 
