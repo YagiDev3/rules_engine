@@ -25,6 +25,12 @@
                 label="Questions"
                 id="question-name"
               ></v-text-field>
+              <v-text-field
+                v-model="step"
+                name="step"
+                label="Step"
+                id="step-number"
+              ></v-text-field>
               <v-radio-group v-model="questionOptions" row>
                 <v-radio
                   value="String"
@@ -105,9 +111,8 @@
                 ></v-radio>
               </v-radio-group>
               <v-checkbox
-              label="Exit"
-              v-model="exit"
-              value="exit"
+                v-model="checkbox"
+                label="Exit"
               ></v-checkbox>
               <v-text-field
                 v-model="id"
@@ -213,8 +218,9 @@ export default {
       optionval: '',
       optionId: 0,
       sequence: 0,
-      step: 1,
-      exit: true,
+      step: null,
+      checkbox: false,
+      checkvalue: 0,
       nextStepId: 'import next step here',
       skipStepId: '',
       ruleStepfk: this.id
@@ -264,16 +270,17 @@ export default {
         break;
       }
 
-      if (this.exit) {
-        this.exit = 1
+      if (this.checkbox == true) {
         this.nextStepId = null
+        this.checkvalue = 1
       } else {
-        this.exit = 0
+        this.checkvalue = 0
+        this.nextStepId = 'IMPORT NEXTSTEPid'
       }
       // this.questionId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
       //   (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       // )
-      var finalOutput = "('" + this.skipStepId + "'" + " "  + "," + " " + "'" + this.questionId + "'" + " "  + "," + " " + "'" + this.sequence++ + "'" + " "  + "," + " " + "'" + this.compareExp + "'" + " "  + "," + " " + "'" + this.optionval + "'" + " "  + "," + " " + "'" + this.nextStepId + "'" + " "  + "," + " " + "'" + this.exit + "'" + " "  + "," + " " + "'" + this.id + "'),"
+      var finalOutput = "('" + this.skipStepId + "'" + " "  + "," + " " + "'" + this.sequence++ + "'" + " "  + "," + " " + "'" + this.compareExp + "'" + " "  + "," + " " + "'" + this.optionval + "'" + " "  + "," + " " + "'" + this.nextStepId + "'" + " "  + "," + " " + "'" + this.checkvalue + "'" + " "  + "," + " " + "'" + this.id + "'),"
       this.optionsets.push({
         script: finalOutput
         // id: this.optionId++,
@@ -283,12 +290,12 @@ export default {
         // exit: this.exit,
         // sequence: this.sequence++
       })
-      this.exit = ''
+      this.checkbox = false
     },
     addQuestion () {
       switch (this.questionOptions) {
         case 'String':
-        this.questionOptions = 0
+        this.questionOptions = 2
         break;
 
         case 'Integer':
@@ -296,10 +303,10 @@ export default {
         break;
 
         case 'Boolean':
-        this.questionOptions = 2
+        this.questionOptions = 3
         break;
       }
-      var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.valueExpression  + "'" + " "  + "," + " " + "'" + this.step++ + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
+      var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.step  + "'" + " "  + "," + " " + "'" + this.questionOptions + "'" + " "  + "," + " " + "'" + this.valueExpression + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
        this.rulestep.push({
         script: ruleOutput,
         questiontext: this.questionName
@@ -324,7 +331,6 @@ export default {
         this.id = ''
         this.questionName = ''
         // this.ruleId = ''
-        this.dataelementId = ''
         this.questionOptions = ''
         this.options = ''
         this.optionval = ''

@@ -71,6 +71,13 @@
                     value="94"
                   ></v-radio>
                 </v-radio-group>
+                <!-- MIB Code -->
+                <v-text-field
+                  v-model="mibCode"
+                  name="mibcode"
+                  label="MIB Code"
+                  id="mib-code"
+                ></v-text-field>
                 <!-- ORDER APS -->
                 <v-radio-group row>
                   <v-checkbox v-model="orderAPS" label="Order APS" value="1"></v-checkbox>
@@ -114,7 +121,7 @@
                   ></v-radio>
                   <v-radio
                     label="Declined"
-                    value="40"
+                    value="99"
                   ></v-radio>
                 </v-radio-group>
                 <hr>
@@ -169,7 +176,7 @@ export default {
   data () {
     return {
       ruleresult: ruleStorage.fetch(),
-      id: '',
+      id: null,
       wop: 'NONE',
       flatExtra: null,
       flatDuration: null,
@@ -180,7 +187,8 @@ export default {
       task: null,
       verbiage: null,
       decision: '',
-      resultId: ''
+      resultId: '',
+      mibCode: null
     }
   },
   computed: {
@@ -215,19 +223,54 @@ export default {
         break;
       }
 
+      if (this.mibCode == null) {
+        this.mibCode = 'NONE'
+      }
+
       this.resultId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       )
-        var resultOutput = ("('" + this.resultId + "'" + "," + "'" + "WOP" + "'," + "'" + this.wop + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "FLATEXTRA" + "'," + "'" + this.flatExtra + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "FLATDURATION" + "'," + "'" + this.flatDuration + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "UWCLASS" + "'," + "'" + this.uwclass + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "ORDERAPS" + "'," + "'" + this.orderAPS + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "ORDERLABS" + "'," + "'" + this.orderLABS + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "REQUIREMENT" + "'," + "'" + this.requirement + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "TASK" + "'," + "'" + this.task + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "VERBIAGE" + "'," + "'" + this.verbiage + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId + "'" + "," + "'" + "DECISION" + "'," + "'" + this.decision + "'" + "," + "'" + this.id + "'),")
+            this.resultId1 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+            this.resultId2 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+            this.resultId3 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+            this.resultId4 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+            this.resultId5 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+            this.resultId6 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+            this.resultId7= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+            this.resultId8= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+            this.resultId9= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+      this.resultId10= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+        var resultOutput = ("('" + this.resultId + "'" + "," + "'" + "WOP" + "'," + "'" + this.wop + "'" + "," + "'" + this.id + "')," +'\n'+
+        "('" + this.resultId9 + "'" + "," + "'" + "FLATEXTRA" + "'," + "'" + this.flatExtra + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId1 + "'" + "," + "'" + "FLATDURATION" + "'," + "'" + this.flatDuration + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId2 + "'" + "," + "'" + "UWCLASS" + "'," + "'" + this.uwclass + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId10 + "'" + "," + "'" + "MIBCODE" + "'," + "'" + this.mibCode + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId3 + "'" + "," + "'" + "ORDERAPS" + "'," + "'" + this.orderAPS + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId4 + "'" + "," + "'" + "ORDERLABS" + "'," + "'" + this.orderLABS + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId5 + "'" + "," + "'" + "REQUIREMENT" + "'," + "'" + this.requirement + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId6 + "'" + "," + "'" + "TASK" + "'," + "'" + this.task + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId7 + "'" + "," + "'" + "VERBIAGE" + "'," + "'" + this.verbiage + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId8 + "'" + "," + "'" + "DECISION" + "'," + "'" + this.decision + "'" + "," + "'" + this.id + "'),")
 
        this.ruleresult.push({
          script: resultOutput
@@ -244,17 +287,6 @@ export default {
         // decision: this.decision,
         // resultId: this.resultId
     })
-      this.id= '',
-      this.wop= 'NONE',
-      this.flatExtra= '',
-      this.flatDuration= '',
-      this.uwclass= 'null',
-      this.orderAPS= '',
-      this.orderLABS= '',
-      this.requirement= '',
-      this.task= '',
-      this.verbiage= '',
-      this.decision= ''
   },
   genGUID () {
       this.id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
