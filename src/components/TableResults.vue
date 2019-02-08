@@ -39,6 +39,13 @@
                   label="Flat Duration"
                   id="question-name"
                 ></v-text-field>
+                <!-- Table Rating -->
+                <v-text-field
+                  v-model="tableRating"
+                  name="tableRating"
+                  label="Table Rating"
+                  id="table-rating"
+                ></v-text-field>
                 <!-- UW CLASS -->
                 <v-radio-group v-model="uwclass" row>
                   <h2>UW CLASS:</h2>
@@ -78,8 +85,19 @@
                   label="MIB Code"
                   id="mib-code"
                 ></v-text-field>
+                <v-radio-group v-model="appSection" row class="labs-style">
+                  <h2>App Section:</h2>
+                  <v-radio
+                    label="Part 1"
+                    value="1"
+                  ></v-radio>
+                  <v-radio
+                    value="2"
+                    label="Part 2"
+                  ></v-radio>
+                </v-radio-group>
                 <!-- ORDER APS -->
-                <v-radio-group row>
+                <v-radio-group row class="labs-style">
                   <v-checkbox v-model="orderAPS" label="Order APS" value="1"></v-checkbox>
                   <v-checkbox v-model="orderLABS" label="Order Labs" value="1"></v-checkbox>
                 </v-radio-group>
@@ -125,6 +143,38 @@
                   ></v-radio>
                 </v-radio-group>
                 <hr>
+                <!-- Tentative offer -->
+                <v-radio-group v-model="tentaive" row>
+                  <h2>Tentative:</h2>
+                  <v-radio
+                    label="Null"
+                    value="null"
+                  ></v-radio>
+                  <v-radio
+                    value="1"
+                    label="Preferred Plus"
+                  ></v-radio>
+                  <v-radio
+                    value="2"
+                    label="Preferred"
+                  ></v-radio>
+                  <v-radio
+                    label="Standard Plus"
+                    value="3"
+                  ></v-radio>
+                  <v-radio
+                    label="Standard NT"
+                    value="4"
+                  ></v-radio>
+                  <v-radio
+                    label="Prefeered TOB"
+                    value="92"
+                  ></v-radio>
+                  <v-radio
+                    label="Standard TOB"
+                    value="94"
+                  ></v-radio>
+                </v-radio-group>
                 <v-btn
                 color="success"
                 @click="addResult">Add Result</v-btn>
@@ -180,15 +230,18 @@ export default {
       wop: 'NONE',
       flatExtra: null,
       flatDuration: null,
-      uwclass: null,
+      uwclass: 'null',
+      tentaive: 'null',
       orderAPS: '0',
       orderLABS: '0',
+      tableRating: '0',
       requirement: null,
       task: null,
       verbiage: null,
       decision: '',
       resultId: '',
-      mibCode: null
+      mibCode: null,
+      appSection: '1'
     }
   },
   computed: {
@@ -260,16 +313,28 @@ export default {
       this.resultId10= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       )
-        var resultOutput = ("('" + this.resultId + "'" + "," + "'" + "WOP" + "'," + "'" + this.wop + "'" + "," + "'" + this.id + "')," +'\n'+
+      this.resultId11= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+      this.resultId12= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+      this.resultId13= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+        var resultOutput = ("('" + this.resultId + "'" + "," + "'" + "WOP" + "'," + "'" + this.wop + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId9 + "'" + "," + "'" + "FLATEXTRA" + "'," + "'" + this.flatExtra + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId1 + "'" + "," + "'" + "FLATDURATION" + "'," + "'" + this.flatDuration + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId11 + "'" + "," + "'" + "Table Rating" + "'," + "'" + this.tableRating + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId2 + "'" + "," + "'" + "UWCLASS" + "'," + "'" + this.uwclass + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId10 + "'" + "," + "'" + "MIBCODE" + "'," + "'" + this.mibCode + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId12 + "'" + "," + "'" + "APPPART" + "'," + "'" + this.appSection + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId3 + "'" + "," + "'" + "ORDERAPS" + "'," + "'" + this.orderAPS + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId4 + "'" + "," + "'" + "ORDERLABS" + "'," + "'" + this.orderLABS + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId5 + "'" + "," + "'" + "REQUIREMENT" + "'," + "'" + this.requirement + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId6 + "'" + "," + "'" + "TASK" + "'," + "'" + this.task + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId7 + "'" + "," + "'" + "VERBIAGE" + "'," + "'" + this.verbiage + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId13 + "'" + "," + "'" + "TENTATIVE" + "'," + "'" + this.tentaive + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId8 + "'" + "," + "'" + "DECISION" + "'," + "'" + this.decision + "'" + "," + "'" + this.id + "'),")
 
        this.ruleresult.push({
@@ -310,6 +375,9 @@ export default {
 }
 </script>
 <style scoped>
+.container {
+  min-width: 100%;
+}
 .script-text {
   font-weight: bold;
   font-size: 14px;
@@ -319,7 +387,53 @@ export default {
 .skipstep-form {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 20px;
-  padding: 10px;
+  padding: 30px;
+}
+
+.v-input {
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    font-size: 14px;
+    text-align: left;
+}
+
+.v-text-field {
+    padding-top: 12px;
+    margin-top: 4px;
+    height: 50px;
+}
+
+.v-input--selection-controls.v-input .v-label {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    top: 0;
+    height: auto;
+    font-size: small;
+}
+
+.labs-style {
+  margin-bottom: -40px;
+}
+
+.flex.xs6 {
+    -ms-flex-preferred-size: 50%;
+    flex-basis: 50%;
+    -webkit-box-flex: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    max-width: 50%;
+    padding: 10px;
 }
 </style>
 
