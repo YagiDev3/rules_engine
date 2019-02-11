@@ -325,7 +325,7 @@ export default {
         var resultOutput = ("('" + this.resultId + "'" + "," + "'" + "WOP" + "'," + "'" + this.wop + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId9 + "'" + "," + "'" + "FLATEXTRA" + "'," + "'" + this.flatExtra + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId1 + "'" + "," + "'" + "FLATDURATION" + "'," + "'" + this.flatDuration + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId11 + "'" + "," + "'" + "Table Rating" + "'," + "'" + this.tableRating + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId11 + "'" + "," + "'" + "TABLERATING" + "'," + "'" + this.tableRating + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId2 + "'" + "," + "'" + "UWCLASS" + "'," + "'" + this.uwclass + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId10 + "'" + "," + "'" + "MIBCODE" + "'," + "'" + this.mibCode + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId12 + "'" + "," + "'" + "APPPART" + "'," + "'" + this.appSection + "'" + "," + "'" + this.id + "')," +
