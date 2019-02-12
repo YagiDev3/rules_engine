@@ -19,10 +19,23 @@
               color="success"
               @click="genGUID">Generate guid</v-btn>
               </v-layout>
+              <v-layout row>
               <v-text-field
                 v-model="questionName"
                 name="questionName"
                 label="Questions"
+                id="question-name"
+              ></v-text-field>
+              <v-btn
+              small
+              color="success"
+              @click="questionToggle = !questionToggle">Add QuestionId +</v-btn>
+              </v-layout>
+              <v-text-field
+                v-if="questionToggle"
+                v-model="questionId"
+                name="questionId"
+                label="Questions_Id"
                 id="question-name"
               ></v-text-field>
               <v-text-field
@@ -214,7 +227,7 @@ export default {
       rulestep: ruleStorage.fetch(),
       id: '',
       questionName: '',
-      questionId: 'null',
+      questionId: null,
       ruleId: 'null',
       valueExpression: 'null',
       dataelementId: 'null',
@@ -230,7 +243,8 @@ export default {
       checkvalue: 0,
       nextStepId: 'import next step here',
       skipStepId: '',
-      ruleStepfk: this.id
+      ruleStepfk: this.id,
+      questionToggle: false
     }
   },
   computed: {
@@ -315,7 +329,7 @@ export default {
         this.questionOptions = 3
         break;
       }
-      var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.step  + "'" + " "  + "," + " " + "'" + this.questionOptions + "'" + " "  + "," + " " + "'" + this.valueExpression + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
+      var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.step  + "'" + " "  + "," + " " + "'" + this.questionOptions + "'" + " "  + "," + " " + "'" + this.questionId + "'" + " "  + "," + " " + "'" + this.valueExpression + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
        this.rulestep.push({
         script: ruleOutput,
         questiontext: this.questionName
@@ -326,6 +340,8 @@ export default {
         // values: this.optionsets
     })
     this.sequence = 0
+    this.questionId = null
+    this.questionToggle = false
   },
   genGUID () {
       this.id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
