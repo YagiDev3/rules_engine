@@ -10,9 +10,10 @@ export default new Router({
   // base: process.env.BASE_URL,
   routes: [
     {
-      path: '/results',
+      path: '/results/:id',
       name: 'Results',
-      component: TableResults
+      component: TableResults,
+      props: true
     },
     {
       path: '/import',

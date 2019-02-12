@@ -223,10 +223,11 @@ var ruleStorage = {
 
 export default {
   name: 'Results',
+  props: ['id'],
   data () {
     return {
       ruleresult: ruleStorage.fetch(),
-      id: null,
+      id: this.id,
       wop: 'NONE',
       flatExtra: null,
       flatDuration: null,
@@ -334,7 +335,7 @@ export default {
         "('" + this.resultId5 + "'" + "," + "'" + "REQUIREMENT" + "'," + "'" + this.requirement + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId6 + "'" + "," + "'" + "TASK" + "'," + "'" + this.task + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId7 + "'" + "," + "'" + "VERBIAGE" + "'," + "'" + this.verbiage + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId13 + "'" + "," + "'" + "TENTATIVE" + "'," + "'" + this.tentaive + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId13 + "'" + "," + "'" + "TENTATIVEOFFER" + "'," + "'" + this.tentaive + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId8 + "'" + "," + "'" + "DECISION" + "'," + "'" + this.decision + "'" + "," + "'" + this.id + "'),")
 
        this.ruleresult.push({
@@ -361,15 +362,15 @@ export default {
     clear () {
       this.id= '',
       this.wop= 'NONE',
-      this.flatExtra= '',
-      this.flatDuration= '',
-      this.uwclass= 'null',
-      this.orderAPS= '',
-      this.orderLABS= '',
-      this.requirement= '',
-      this.task= '',
-      this.verbiage= '',
-      this.decision= ''
+      this.flatExtra= null,
+      this.flatDuration= null,
+      this.uwclass= null,
+      this.orderAPS= '0',
+      this.orderLABS= '0',
+      this.requirement= null,
+      this.task= null,
+      this.verbiage= null,
+      this.decision= null
     }
 }
 }

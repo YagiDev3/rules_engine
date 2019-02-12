@@ -158,6 +158,13 @@
               small
               color="red"
               @click="optionsets.splice(index, 1)">remove</v-btn>
+              <v-btn
+              v-if="option.exit"
+              small
+              color="blue"
+              :to="{ name: 'Results', params: { id: option.skip }}"
+              target="_blank"
+              >add result</v-btn>
               </v-layout>
               </div>
               <div class="draggable-state">
@@ -282,7 +289,9 @@ export default {
       // )
       var finalOutput = "('" + this.skipStepId + "'" + " "  + "," + " " + "'" + this.sequence++ + "'" + " "  + "," + " " + "'" + this.compareExp + "'" + " "  + "," + " " + "'" + this.optionval + "'" + " "  + "," + " " + "'" + this.nextStepId + "'" + " "  + "," + " " + "'" + this.checkvalue + "'" + " "  + "," + " " + "'" + this.id + "'),"
       this.optionsets.push({
-        script: finalOutput
+        script: finalOutput,
+        exit: this.checkvalue,
+        skip: this.skipStepId
         // id: this.optionId++,
         // value: this.optionval,
         // expression: this.compareExp,
@@ -339,6 +348,9 @@ export default {
         this.skipStepId = ''
         this.step = 1,
         this.sequence = 0
+    },
+    loadResults(id) {
+      this.$router.push('/results/' + id)
     }
   }
 }
