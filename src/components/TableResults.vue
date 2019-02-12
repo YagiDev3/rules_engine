@@ -206,7 +206,7 @@
 
 <script>
 /* eslint-disable */
-var STORAGE_KEY = 'rulestep-vue'
+var STORAGE_KEY = 'ruleresult-vue'
 var ruleStorage = {
   fetch: function () {
     var ruleresult = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
