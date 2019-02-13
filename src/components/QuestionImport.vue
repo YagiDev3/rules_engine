@@ -11,12 +11,13 @@
               <v-text-field
                 v-model="id"
                 name="ruleStepId"
-                label="rulestep_Id"
+                label="Rulestep_Id"
                 id="rulestep-id"
+                box
               ></v-text-field>
               <v-btn
               small
-              color="success"
+              color="info"
               @click="genGUID">Generate guid</v-btn>
               </v-layout>
               <v-layout row>
@@ -28,7 +29,7 @@
               ></v-text-field>
               <v-btn
               small
-              color="success"
+              color="info"
               @click="questionToggle = !questionToggle">Add QuestionId +</v-btn>
               </v-layout>
               <v-text-field
@@ -76,6 +77,10 @@
                 label="DataElement_Id"
                 id="dataelement-id"
               ></v-text-field>
+              <v-btn
+              small
+              color="success"
+              @click="addQuestion">Add Question</v-btn>
               </div>
               <div class="skipstep-form">
                 <h2>SkipStep-OptionSet</h2>
@@ -85,10 +90,11 @@
                 name="skipStepId"
                 label="SkipStep_Id"
                 id="skipstep-id"
+                box
               ></v-text-field>
               <v-btn
               small
-              color="success"
+              color="info"
               @click="skipGUID">Generate guid</v-btn>
                 </v-layout>
                 <v-text-field
@@ -133,15 +139,11 @@
                 name="rulestep_fk"
                 label="Current Rulestep"
               ></v-text-field>
-              </div>
               <v-btn
               small
               color="success"
               @click="addOption">+ option</v-btn>
-              <v-btn
-              small
-              color="success"
-              @click="addQuestion">Add Question</v-btn>
+              </div>
               <v-btn
               small
               color="warning"
@@ -150,8 +152,12 @@
             </v-flex>
             <v-flex xs6
             class="results">
-              <h1>Question</h1>
-              <span>public static readonly string ruleStep = @"insert into RuleSteps([Id]...) <br>
+              <div><h1>Question</h1>
+              <v-btn
+              small
+              color="info"
+              @click="scripter = !scripter">script</v-btn></div>
+              <span v-if="scripter">public static readonly string ruleStep = @"insert into RuleSteps([Id]...) <br>
             values <br></span>
             <div
               v-for="(question, index) in rulestep"
@@ -164,9 +170,9 @@
               @click="rulestep.splice(index, 1)">remove</v-btn>
               </v-layout>
             </div>
-            <span>";</span>
+            <span v-if="scripter">";</span>
             <h1>SkipStep</h1>
-            <span>public static readonly string skipStep = @"insert into SkipStep([Id]...) <br>
+            <span v-if="scripter">public static readonly string skipStep = @"insert into SkipStep([Id]...) <br>
             values <br></span>
               <div
               v-for="(option, index) in optionsets"
@@ -187,15 +193,19 @@
               >add result</v-btn>
               </v-layout>
               </div>
-              <span>";</span>
+              <span v-if="scripter">";</span>
               <div class="draggable-state">
-                <draggable v-model="rulestep" :options="{draggable:'.sortable-stack', animation: 150, easing: 'cubic-bezier(1, 0, 0, 1)'}" @start="drag=true" @end="drag=false">
+                <draggable v-model="rulestep" :options="{draggable:'.sortable-stack', animation: 150, easing: 'cubic-bezier(1, 0, 0, 1)', sort: true}"
+                @start="drag=true"
+                @end="drag=false"
+                @change="update">
                   <div
                   class="sortable-stack"
                   v-for="element in rulestep"
                   :key="element.id">
                     {{element.questiontext}}
                     {{element.script}}
+                    {{element.stepId}}
                   </div>
                 </draggable>
               </div>
@@ -206,7 +216,6 @@
     <router-view/>
 </div>
 </template>
-
 <script>
 import draggable from 'vuedraggable'
 /* eslint-disable */
@@ -246,13 +255,14 @@ export default {
       optionval: '',
       optionId: 0,
       sequence: 0,
-      step: null,
+      step: 0,
       checkbox: false,
       checkvalue: 0,
       nextStepId: 'import next step here',
       skipStepId: '',
       ruleStepfk: this.id,
-      questionToggle: false
+      questionToggle: false,
+      scripter: false
     }
   },
   computed: {
@@ -272,6 +282,33 @@ export default {
     }
   },
   methods: {
+    	// Event when you move an item in the list or between lists
+	onMove: function (/**Event*/evt, /**Event*/originalEvent) {
+		// Example: https://jsbin.com/nawahef/edit?js,output
+		evt.dragged; // dragged HTMLElement
+		evt.draggedRect; // DOMRect {left, top, right, bottom}
+		evt.related; // HTMLElement on which have guided
+		evt.relatedRect; // DOMRect
+		evt.willInsertAfter;
+    // Boolean that is true if Sortable will insert drag element after target by default
+    console.log(evt)
+		// return false; — for cancel
+		// return -1; — insert before target
+		// return 1; — insert after target
+	},
+  update (evt) {
+    this.rulestep.map((stepper, index) => {
+      stepper.stepId = index + 1;
+    })
+		var itemEl = evt.item;  // dragged HTMLElement
+		evt.to;    // target list
+		evt.from;  // previous list
+		var oldIndex = evt.oldIndex;  // element's old index within old parent
+    var newIndex = evt.newIndex;  // element's new index within new parent
+    console.log(evt)
+
+    // this.rulestep[evt.oldIndex].stepId = evt.newIndex
+	},
     addOption () {
       switch (this.compareExp) {
         case 'default':
@@ -340,13 +377,16 @@ export default {
       var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.step  + "'" + " "  + "," + " " + "'" + this.questionOptions + "'" + " "  + "," + " " + "'" + this.questionId + "'" + " "  + "," + " " + "'" + this.valueExpression + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
        this.rulestep.push({
         script: ruleOutput,
-        questiontext: this.questionName
-        // questionName: this.questionName,
-        // ruleId: this.ruleId,
-        // dataelementId: this.dataelementId,
-        // option: this.questionOptions,
-        // values: this.optionsets
+        id: this.id,
+        stepId: this.step,
+        questionOptions: this.questionOptions,
+        questionId: this.questionId,
+        valueExpression: this.valueExpression,
+        ruleId: this.ruleId,
+        questiontext: this.questionName,
+        dataelementId: this.dataelementId,
     })
+    this.step++
     this.sequence = 0
     this.questionId = null
     this.questionToggle = false
@@ -371,7 +411,6 @@ export default {
         this.compareExp = ''
         this.exit = ''
         this.skipStepId = ''
-        this.step = 1,
         this.sequence = 0
     },
     loadResults(id) {
