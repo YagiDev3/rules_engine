@@ -80,7 +80,7 @@
               <v-btn
               small
               color="success"
-              @click="addQuestion">Add Question</v-btn>
+              @click="addQuestion">+ Add Question</v-btn>
               </div>
               <div class="skipstep-form">
                 <h2>SkipStep-OptionSet</h2>
@@ -143,11 +143,15 @@
               small
               color="success"
               @click="addOption">+ option</v-btn>
+              <v-btn
+              small
+              color="warning"
+              @click="clearOption">Clear optionset</v-btn>
               </div>
               <v-btn
               small
               color="warning"
-              @click="clear">Clear</v-btn>
+              @click="clear">Clear ALL</v-btn>
             </v-form>
             </v-flex>
             <v-flex xs6
@@ -157,7 +161,7 @@
               small
               color="info"
               @click="scripter = !scripter">script</v-btn></div>
-              <span v-if="scripter">public static readonly string ruleStep = @"insert into RuleSteps([Id]...) <br>
+              <span v-if="scripter">public static readonly string ruleStep = @"insert into RuleSteps([Id],[Step],[Type],[QuestionId],[ValueExpression],[RuleId],[DisplayQuestion],[DataElementId]) <br>
             values <br></span>
             <div
               v-for="(question, index) in rulestep"
@@ -172,7 +176,7 @@
             </div>
             <span v-if="scripter">";</span>
             <h1>SkipStep</h1>
-            <span v-if="scripter">public static readonly string skipStep = @"insert into SkipStep([Id]...) <br>
+            <span v-if="scripter">public static readonly string skipStep = @"insert into SkipStep([Id],[Sequence],[CompareExpression],[CompareValue],[NextStep_Id],[Exit],[RuleStep_Id]) <br>
             values <br></span>
               <div
               v-for="(option, index) in optionsets"
@@ -343,22 +347,16 @@ export default {
         this.checkvalue = 0
         this.nextStepId = 'IMPORT NEXTSTEPid'
       }
-      // this.questionId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-      //   (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      // )
       var finalOutput = "('" + this.skipStepId + "'" + " "  + "," + " " + "'" + this.sequence++ + "'" + " "  + "," + " " + "'" + this.compareExp + "'" + " "  + "," + " " + "'" + this.optionval + "'" + " "  + "," + " " + "'" + this.nextStepId + "'" + " "  + "," + " " + "'" + this.checkvalue + "'" + " "  + "," + " " + "'" + this.id + "'),"
       this.optionsets.push({
         script: finalOutput,
         exit: this.checkvalue,
         skip: this.skipStepId
-        // id: this.optionId++,
-        // value: this.optionval,
-        // expression: this.compareExp,
-        // nextStepId: this.nextStepId,
-        // exit: this.exit,
-        // sequence: this.sequence++
       })
       this.checkbox = false
+      this.skipStepId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
     },
     addQuestion () {
       switch (this.questionOptions) {
@@ -390,6 +388,9 @@ export default {
     this.sequence = 0
     this.questionId = null
     this.questionToggle = false
+    this.id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
   },
   genGUID () {
       this.id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -412,6 +413,13 @@ export default {
         this.exit = ''
         this.skipStepId = ''
         this.sequence = 0
+    },
+    clearOption () {
+        this.options = ''
+        this.optionval = ''
+        this.compareExp = ''
+        this.exit = ''
+        this.skipStepId = ''
     },
     loadResults(id) {
       this.$router.push('/results/' + id)
