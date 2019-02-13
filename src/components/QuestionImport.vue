@@ -139,16 +139,20 @@
               color="success"
               @click="addOption">+ option</v-btn>
               <v-btn
+              small
               color="success"
               @click="addQuestion">Add Question</v-btn>
               <v-btn
-              color="success"
+              small
+              color="warning"
               @click="clear">Clear</v-btn>
             </v-form>
             </v-flex>
             <v-flex xs6
             class="results">
               <h1>Question</h1>
+              <span>public static readonly string ruleStep = @"insert into RuleSteps([Id]...) <br>
+            values <br></span>
             <div
               v-for="(question, index) in rulestep"
               :key="question.id"
@@ -160,7 +164,10 @@
               @click="rulestep.splice(index, 1)">remove</v-btn>
               </v-layout>
             </div>
+            <span>";</span>
             <h1>SkipStep</h1>
+            <span>public static readonly string skipStep = @"insert into SkipStep([Id]...) <br>
+            values <br></span>
               <div
               v-for="(option, index) in optionsets"
               :key="option.id">
@@ -180,6 +187,7 @@
               >add result</v-btn>
               </v-layout>
               </div>
+              <span>";</span>
               <div class="draggable-state">
                 <draggable v-model="rulestep" :options="{draggable:'.sortable-stack', animation: 150, easing: 'cubic-bezier(1, 0, 0, 1)'}" @start="drag=true" @end="drag=false">
                   <div
