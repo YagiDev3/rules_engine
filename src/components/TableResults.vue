@@ -14,7 +14,7 @@
                   <h2>WOP:</h2>
                   <v-radio
                     label="NONE"
-                    value="NONE"
+                    value="null"
                   ></v-radio>
                   <v-radio
                     value="ACC"
@@ -228,7 +228,7 @@ export default {
     return {
       ruleresult: ruleStorage.fetch(),
       id: this.id,
-      wop: 'NONE',
+      wop: 'null',
       flatExtra: null,
       flatDuration: null,
       uwclass: 'null',
@@ -337,7 +337,6 @@ export default {
         "('" + this.resultId7 + "'" + "," + "'" + "VERBIAGE" + "'," + "'" + this.verbiage + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId13 + "'" + "," + "'" + "TENTATIVEOFFER" + "'," + "'" + this.tentaive + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId8 + "'" + "," + "'" + "DECISION" + "'," + "'" + this.decision + "'" + "," + "'" + this.id + "'),")
-
        this.ruleresult.push({
          script: resultOutput
         // id: this.id,
