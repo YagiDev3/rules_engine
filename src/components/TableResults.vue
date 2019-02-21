@@ -14,7 +14,7 @@
                   <h2>WOP:</h2>
                   <v-radio
                     label="NULL"
-                    value="NULL"
+                    value="null"
                   ></v-radio>
                   <v-radio
                     value="ACC"
@@ -38,13 +38,6 @@
                   name="flatduration"
                   label="Flat Duration"
                   id="question-name"
-                ></v-text-field>
-                <!-- Table Rating -->
-                <v-text-field
-                  v-model="tableRating"
-                  name="tableRating"
-                  label="Table Rating"
-                  id="table-rating"
                 ></v-text-field>
                 <!-- UW CLASS -->
                 <v-radio-group v-model="uwclass" row>
@@ -78,6 +71,45 @@
                     value="94"
                   ></v-radio>
                 </v-radio-group>
+                <!-- Tentative offer -->
+                <v-radio-group v-model="tentaive" row>
+                  <h2>Tentative:</h2>
+                  <v-radio
+                    label="Null"
+                    value="null"
+                  ></v-radio>
+                  <v-radio
+                    value="1"
+                    label="Preferred Plus"
+                  ></v-radio>
+                  <v-radio
+                    value="2"
+                    label="Preferred"
+                  ></v-radio>
+                  <v-radio
+                    label="Standard Plus"
+                    value="3"
+                  ></v-radio>
+                  <v-radio
+                    label="Standard NT"
+                    value="4"
+                  ></v-radio>
+                  <v-radio
+                    label="Prefeered TOB"
+                    value="92"
+                  ></v-radio>
+                  <v-radio
+                    label="Standard TOB"
+                    value="94"
+                  ></v-radio>
+                </v-radio-group>
+                <!-- Table Rating -->
+                <v-text-field
+                  v-model="tableRating"
+                  name="tableRating"
+                  label="Table Rating"
+                  id="table-rating"
+                ></v-text-field>
                 <!-- MIB Code -->
                 <v-text-field
                   v-model="mibCode"
@@ -98,8 +130,9 @@
                 </v-radio-group>
                 <!-- ORDER APS -->
                 <v-radio-group row class="labs-style">
-                  <v-checkbox v-model="orderAPS" label="Order APS" value="1"></v-checkbox>
-                  <v-checkbox v-model="orderLABS" label="Order Labs" value="1"></v-checkbox>
+                  <v-checkbox v-model="orderAPS" label="OrderAPS" value="1"></v-checkbox>&nbsp;
+                  <v-checkbox v-model="orderLABS" label="OrderLabs" value="1"></v-checkbox>&nbsp;
+                  <v-checkbox v-model="orderCDT" label="OrderLabsCDT" value="2"></v-checkbox>
                 </v-radio-group>
                 <!-- Requirement -->
                 <v-text-field
@@ -143,38 +176,6 @@
                   ></v-radio>
                 </v-radio-group>
                 <hr>
-                <!-- Tentative offer -->
-                <v-radio-group v-model="tentaive" row>
-                  <h2>Tentative:</h2>
-                  <v-radio
-                    label="Null"
-                    value="null"
-                  ></v-radio>
-                  <v-radio
-                    value="1"
-                    label="Preferred Plus"
-                  ></v-radio>
-                  <v-radio
-                    value="2"
-                    label="Preferred"
-                  ></v-radio>
-                  <v-radio
-                    label="Standard Plus"
-                    value="3"
-                  ></v-radio>
-                  <v-radio
-                    label="Standard NT"
-                    value="4"
-                  ></v-radio>
-                  <v-radio
-                    label="Prefeered TOB"
-                    value="92"
-                  ></v-radio>
-                  <v-radio
-                    label="Standard TOB"
-                    value="94"
-                  ></v-radio>
-                </v-radio-group>
                 <v-btn
                 color="success"
                 @click="addResult">Add Result</v-btn>
@@ -183,6 +184,23 @@
                 @click="clear">Clear</v-btn>
             </v-form>
             </v-flex>
+            <!--SnackBar-->
+            <v-snackbar
+              v-model="snackbar"
+              timeout="2000"
+              top
+              vertical
+              auto-height
+            >
+              {{ text }}
+              <v-btn
+                color="pink"
+                flat
+                @click="snackbar = false"
+            >
+                Close
+              </v-btn>
+            </v-snackbar>
             <!--Results section-->
             <v-flex xs6>
                 <h1>Results</h1>
@@ -194,9 +212,6 @@
                 <v-btn
                 color="red"
                 @click="ruleresult.splice(index, 1)">remove</v-btn>
-                <!-- <v-btn
-                color="success"
-                @click="">Add Options</v-btn> -->
               </div>
                 </v-flex>
           </v-layout>
@@ -239,10 +254,12 @@ export default {
       requirement: null,
       task: null,
       verbiage: null,
-      decision: '',
+      decision: '10',
       resultId: '',
       mibCode: null,
-      appSection: '1'
+      appSection: '1',
+      snackbar: false,
+      text: 'Added Result'
     }
   },
   computed: {
@@ -332,6 +349,7 @@ export default {
         "('" + this.resultId12 + "'" + "," + "'" + "APPPART" + "'," + "'" + this.appSection + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId3 + "'" + "," + "'" + "ORDERAPS" + "'," + "'" + this.orderAPS + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId4 + "'" + "," + "'" + "ORDERLABS" + "'," + "'" + this.orderLABS + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId4 + "'" + "," + "'" + "ORDERLABSCDT" + "'," + "'" + this.orderCDT + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId5 + "'" + "," + "'" + "REQUIREMENT" + "'," + "'" + this.requirement + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId6 + "'" + "," + "'" + "TASK" + "'," + "'" + this.task + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId7 + "'" + "," + "'" + "VERBIAGE" + "'," + "'" + this.verbiage + "'" + "," + "'" + this.id + "')," +
@@ -352,6 +370,8 @@ export default {
         // decision: this.decision,
         // resultId: this.resultId
     })
+    // Snackbar implementation when you add result
+    this.snackbar = true
   },
   genGUID () {
       this.id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -360,16 +380,18 @@ export default {
     },
     clear () {
       this.id= '',
-      this.wop= 'NONE',
+      this.wop= 'null',
       this.flatExtra= null,
       this.flatDuration= null,
-      this.uwclass= null,
+      this.uwclass= 'null',
       this.orderAPS= '0',
       this.orderLABS= '0',
+      this.orderCDT= '0',
       this.requirement= null,
       this.task= null,
       this.verbiage= null,
-      this.decision= null
+      this.decision= '10',
+      this.tentaive= 'null'
     }
 }
 }

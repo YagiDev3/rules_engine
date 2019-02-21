@@ -47,16 +47,16 @@
               ></v-text-field>
               <v-radio-group v-model="questionOptions" row>
                 <v-radio
-                  value="String"
-                  label="String"
-                ></v-radio>
-                <v-radio
                   value="Integer"
                   label="Integer"
                 ></v-radio>
                 <v-radio
-                  label="Boolean"
-                  value="Boolean"
+                  value="String"
+                  label="String"
+                ></v-radio>
+                <v-radio
+                  label="DateTime"
+                  value="Date"
                 ></v-radio>
               </v-radio-group>
               <v-text-field
@@ -154,6 +154,23 @@
               @click="clear">Clear ALL</v-btn>
             </v-form>
             </v-flex>
+            <!--SnackBar-->
+            <v-snackbar
+              v-model="snackbar"
+              timeout="2000"
+              top
+              vertical
+              auto-height
+            >
+              {{ text }}
+              <v-btn
+                color="pink"
+                flat
+                @click="snackbar = false"
+            >
+                Close
+              </v-btn>
+            </v-snackbar>
             <v-flex xs6
             class="results">
               <div><h1>Question</h1>
@@ -266,7 +283,9 @@ export default {
       skipStepId: '',
       ruleStepfk: this.id,
       questionToggle: false,
-      scripter: false
+      scripter: false,
+      snackbar: false,
+      text: 'Added Question'
     }
   },
   computed: {
@@ -360,16 +379,16 @@ export default {
     },
     addQuestion () {
       switch (this.questionOptions) {
-        case 'String':
-        this.questionOptions = 2
-        break;
-
         case 'Integer':
         this.questionOptions = 1
         break;
 
-        case 'Boolean':
-        this.questionOptions = 3
+        case 'String':
+        this.questionOptions = 2
+        break;
+
+        case 'Date':
+        this.questionOptions = 4
         break;
       }
       var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.step  + "'" + " "  + "," + " " + "'" + this.questionOptions + "'" + " "  + "," + " " + "'" + this.questionId + "'" + " "  + "," + " " + "'" + this.valueExpression + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
@@ -388,6 +407,7 @@ export default {
     this.sequence = 0
     this.questionId = null
     this.questionToggle = false
+    this.snackbar = true
   },
   genGUID () {
       this.id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
