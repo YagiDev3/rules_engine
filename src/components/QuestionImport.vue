@@ -157,7 +157,7 @@
             <!--SnackBar-->
             <v-snackbar
               v-model="snackbar"
-              timeout="2000"
+              :timeout="timeout"
               top
               vertical
               auto-height
@@ -173,11 +173,14 @@
             </v-snackbar>
             <v-flex xs6
             class="results">
-              <div><h1>Question</h1>
-              <v-btn
+            <div>
+            <v-btn
               small
               color="info"
-              @click="scripter = !scripter">script</v-btn></div>
+              @click="scripter = !scripter">script</v-btn>
+            </div>
+              <div><h1>Question</h1>
+              </div>
               <span v-if="scripter">public static readonly string ruleStep = @"insert into RuleSteps([Id],[Step],[Type],[QuestionId],[ValueExpression],[RuleId],[DisplayQuestion],[DataElementId]) <br>
             values <br></span>
             <div
@@ -285,7 +288,8 @@ export default {
       questionToggle: false,
       scripter: false,
       snackbar: false,
-      text: 'Added Question'
+      text: 'Added Question',
+      timeout: 2000
     }
   },
   computed: {
