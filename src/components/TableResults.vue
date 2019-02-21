@@ -13,8 +13,8 @@
                 <v-radio-group v-model="wop" row>
                   <h2>WOP:</h2>
                   <v-radio
-                    label="NONE"
-                    value="null"
+                    label="NULL"
+                    value="NULL"
                   ></v-radio>
                   <v-radio
                     value="ACC"
