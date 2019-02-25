@@ -259,7 +259,8 @@ export default {
       mibCode: null,
       appSection: '1',
       snackbar: false,
-      text: 'Added Result'
+      text: 'Added Result',
+      orderCDT: '0'
     }
   },
   computed: {
