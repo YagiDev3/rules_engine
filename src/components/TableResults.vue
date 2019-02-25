@@ -340,6 +340,9 @@ export default {
       this.resultId13= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       )
+      this.resultId14= ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
         var resultOutput = ("('" + this.resultId + "'" + "," + "'" + "WOP" + "'," + "'" + this.wop + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId9 + "'" + "," + "'" + "FLATEXTRA" + "'," + "'" + this.flatExtra + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId1 + "'" + "," + "'" + "FLATDURATION" + "'," + "'" + this.flatDuration + "'" + "," + "'" + this.id + "')," +
@@ -349,7 +352,7 @@ export default {
         "('" + this.resultId12 + "'" + "," + "'" + "APPPART" + "'," + "'" + this.appSection + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId3 + "'" + "," + "'" + "ORDERAPS" + "'," + "'" + this.orderAPS + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId4 + "'" + "," + "'" + "ORDERLABS" + "'," + "'" + this.orderLABS + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId4 + "'" + "," + "'" + "ORDERLABSCDT" + "'," + "'" + this.orderCDT + "'" + "," + "'" + this.id + "')," +
+        "('" + this.resultId14 + "'" + "," + "'" + "ORDERLABSCDT" + "'," + "'" + this.orderCDT + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId5 + "'" + "," + "'" + "REQUIREMENT" + "'," + "'" + this.requirement + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId6 + "'" + "," + "'" + "TASK" + "'," + "'" + this.task + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId7 + "'" + "," + "'" + "VERBIAGE" + "'," + "'" + this.verbiage + "'" + "," + "'" + this.id + "')," +
