@@ -132,7 +132,7 @@
                 <v-radio-group row class="labs-style">
                   <v-checkbox v-model="orderAPS" label="OrderAPS" value="1"></v-checkbox>&nbsp;
                   <v-checkbox v-model="orderLABS" label="OrderLabs" value="1"></v-checkbox>&nbsp;
-                  <v-checkbox v-model="orderCDT" label="OrderLabsCDT" value="2"></v-checkbox>
+                  <v-checkbox v-model="orderLABS" label="OrderLabsCDT" value="2"></v-checkbox>
                 </v-radio-group>
                 <!-- Requirement -->
                 <v-text-field
@@ -353,7 +353,6 @@ export default {
         "('" + this.resultId12 + "'" + "," + "'" + "APPPART" + "'," + "'" + this.appSection + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId3 + "'" + "," + "'" + "ORDERAPS" + "'," + "'" + this.orderAPS + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId4 + "'" + "," + "'" + "ORDERLABS" + "'," + "'" + this.orderLABS + "'" + "," + "'" + this.id + "')," +
-        "('" + this.resultId14 + "'" + "," + "'" + "ORDERLABSCDT" + "'," + "'" + this.orderCDT + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId5 + "'" + "," + "'" + "REQUIREMENT" + "'," + "'" + this.requirement + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId6 + "'" + "," + "'" + "TASK" + "'," + "'" + this.task + "'" + "," + "'" + this.id + "')," +
         "('" + this.resultId7 + "'" + "," + "'" + "VERBIAGE" + "'," + "'" + this.verbiage + "'" + "," + "'" + this.id + "')," +
