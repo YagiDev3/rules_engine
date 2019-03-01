@@ -196,7 +196,7 @@
             </div>
             <span v-if="scripter">";</span>
             <h1>SkipStep</h1>
-            <span v-if="scripter">public static readonly string skipSteps = @"insert into SkipStep([Id],[Sequence],[CompareExpression],[CompareValue],[NextStep_Id],[Exit],[RuleStep_Id]) <br>
+            <span v-if="scripter">public static readonly string skipSteps = @"insert into SkipSteps([Id],[Sequence],[CompareExpression],[CompareValue],[NextStep_Id],[Exit],[RuleStep_Id]) <br>
             values <br></span>
               <div
               v-for="(option, index) in optionsets"
