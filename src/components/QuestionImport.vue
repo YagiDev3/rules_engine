@@ -55,8 +55,8 @@
                   label="String"
                 ></v-radio>
                 <v-radio
-                  label="DateTime"
-                  value="Date"
+                  label="Double"
+                  value="Double"
                 ></v-radio>
               </v-radio-group>
               <v-text-field
@@ -77,6 +77,12 @@
                 label="DataElement_Id"
                 id="dataelement-id"
               ></v-text-field>
+              <v-text-field
+                v-model="hasDataElement"
+                name="hasDataElement"
+                label="HasDataElement"
+                id="hasdataelement"
+              ></v-text-field>
               <v-btn
               small
               color="success"
@@ -96,6 +102,7 @@
               small
               color="info"
               @click="skipGUID">Generate guid</v-btn>
+              <!-- breakerr====================================== -->
                 </v-layout>
                 <v-text-field
                 v-model="optionval"
@@ -181,7 +188,7 @@
             </div>
               <div><h1>Question</h1>
               </div>
-              <span v-if="scripter">public static readonly string ruleStep = @"insert into RuleSteps([Id],[Step],[Type],[QuestionId],[ValueExpression],[RuleId],[DisplayQuestion],[DataElementId]) <br>
+              <span v-if="scripter">public static readonly string ruleStep = @"insert into RuleSteps([Id],[Step],[Type],[QuestionId],[ValueExpression],[RuleId],[DisplayQuestion],[DataElementId],[HasChildElements]) <br>
             values <br></span>
             <div
               v-for="(question, index) in rulestep"
@@ -272,6 +279,7 @@ export default {
       ruleId: 'null',
       valueExpression: 'null',
       dataelementId: 'null',
+      hasDataElement: '0',
       optionsets: [],
       linkedRule: [],
       questionOptions: [],
@@ -391,11 +399,11 @@ export default {
         this.questionOptions = 2
         break;
 
-        case 'Date':
-        this.questionOptions = 4
+        case 'Double':
+        this.questionOptions = 6
         break;
       }
-      var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.step  + "'" + " "  + "," + " " + "'" + this.questionOptions + "'" + " "  + "," + " " + "'" + this.questionId + "'" + " "  + "," + " " + "'" + this.valueExpression + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.dataelementId + "'),"
+      var ruleOutput = "('" + this.id  + "'" + " "  + "," + " " + "'" + this.step  + "'" + " "  + "," + " " + "'" + this.questionOptions + "'" + " "  + "," + " " + "'" + this.questionId + "'" + " "  + "," + " " + "'" + this.valueExpression + "'" + " "  + "," + " " + "'" + this.ruleId + "'" + " "  + "," + " " + "'" + this.questionName + "'" + " "  + "," + " " + "'" + this.dataelementId+ "'" + " "  + "," + " " + "'" + this.hasDataElement + "'),"
        this.rulestep.push({
         script: ruleOutput,
         id: this.id,
@@ -406,6 +414,7 @@ export default {
         ruleId: this.ruleId,
         questiontext: this.questionName,
         dataelementId: this.dataelementId,
+        hasDataElement: this.hasDataElement
     })
     this.step++
     this.sequence = 0
@@ -433,7 +442,8 @@ export default {
         this.compareExp = ''
         this.exit = ''
         this.skipStepId = ''
-        this.sequence = 0
+        this.sequence = 0,
+        thi.hasDataElement = 0
     },
     clearOption () {
         this.options = ''
