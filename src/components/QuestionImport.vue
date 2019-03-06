@@ -32,6 +32,7 @@
               color="info"
               @click="questionToggle = !questionToggle">Add QuestionId +</v-btn>
               </v-layout>
+              <v-layout row>
               <v-text-field
                 v-if="questionToggle"
                 v-model="questionId"
@@ -39,6 +40,11 @@
                 label="Questions_Id"
                 id="question-name"
               ></v-text-field>
+              <v-btn
+              small
+              color="info"
+              @click="qidGUID">Generate guid</v-btn>
+              </v-layout>
               <v-text-field
                 v-model="step"
                 name="step"
@@ -429,6 +435,11 @@ export default {
     },
     skipGUID () {
       this.skipStepId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+    },
+    qidGUID () {
+      this.questionId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       )
     },
